@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace OrderHistory.API.Controllers;
 
-[Route("api/orders/{id}/history")]
+[Route("api/orders/{tracker}/history")]
 [ApiController]
 public class OrderHistory(IMediator mediator) : ControllerBase
 {
    
     [HttpGet]
-    public async Task<IActionResult> OrderChanges(int id)
+    public async Task<IActionResult> OrderChanges(Guid tracker)
     {
-        var pointChangeQuery = new OrderPointChangeQuery(id);
-        var statusChangeQuery = new OrderStatusChangeQuery(id);
+        var pointChangeQuery = new OrderPointChangeQuery(tracker);
+        var statusChangeQuery = new OrderStatusChangeQuery(tracker);
 
         var pointChanges = await mediator.Send(pointChangeQuery);
         var statusChanges = await mediator.Send(statusChangeQuery);

@@ -12,7 +12,7 @@ public class OrderPointChangeConsumer(IMediator mediator)
 {
     public async Task Consume(ConsumeContext<OrderPointChangeEvent> context)
     {
-        var point = new OrderPointChangeCommand(context.Message.OrderId, context.Message.PointId);
+        var point = new OrderPointChangeCommand(context.Message.Tracker, context.Message.PointId);
         _ = await mediator.Send(point);
     }
 }

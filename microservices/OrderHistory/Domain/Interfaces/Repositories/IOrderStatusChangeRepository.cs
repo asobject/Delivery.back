@@ -7,5 +7,5 @@ namespace Domain.Interfaces.Repositories;
 
 public interface IOrderStatusChangeRepository : IRepository<OrderStatusChange>
 {
-    Task<IEnumerable<OrderStatusChange>> GetStatusChangesAsync(int orderId);
+    Task<IEnumerable<OrderStatusChange>> GetStatusChangesAsync(Guid tracker);
 }

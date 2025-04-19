@@ -9,8 +9,8 @@ namespace Infrastructure.Repositories;
 
 public class OrderStatusChangeRepository(ApplicationDbContext context) : Repository<OrderStatusChange>(context), IOrderStatusChangeRepository
 {
-    public async Task<IEnumerable<OrderStatusChange>> GetStatusChangesAsync(int orderId)
+    public async Task<IEnumerable<OrderStatusChange>> GetStatusChangesAsync(Guid tracker)
     {
-        return await _dbSet.AsNoTracking().Where(o => o.OrderId == orderId).ToListAsync();
+        return await _dbSet.AsNoTracking().Where(o => o.Tracker == tracker).ToListAsync();
     }
 }

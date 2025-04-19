@@ -13,9 +13,10 @@ public class OrderStatusChangeCommandHandler(IUnitOfWork unitOfWork) :
         await unitOfWork.StatusChanges.AddAsync(
            new Domain.Entities.OrderStatusChange
            {
-               OrderId = request.OrderId,
+               Tracker = request.Tracker,
                Status = request.Status
            });
+        await unitOfWork.CompleteAsync();
         return new OrderStatusChangeResponse(Message: "order status change successful");
     }
 }

@@ -14,7 +14,7 @@ public class OrderStatusChangeCommandHandler(IUnitOfWork unitOfWork, IPublishEnd
         var order = await unitOfWork.Orders.GetOrderByTrackerAsync(request.Tracker) ?? throw new NotFoundException($"order with tracker={request.Tracker} not found");
         order.OrderStatus = request.Status;
         await unitOfWork.Orders.UpdateOrderStatusAsync(order.Id, request.Status);
-        await publishEndpoint.Publish(new OrderStatusChangeEvent(OrderId: order.Id, Status: request.Status), cancellationToken);
+        await publishEndpoint.Publish(new OrderStatusChangeEvent(Tracker: order.Tracker, Status: request.Status), cancellationToken);
         return new OrderStatusChangeResponse(Message: "order status change successful");
     }
 }

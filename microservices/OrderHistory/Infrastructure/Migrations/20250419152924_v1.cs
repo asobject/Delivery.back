@@ -18,7 +18,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    Tracker = table.Column<Guid>(type: "uuid", nullable: false),
                     PointId = table.Column<int>(type: "integer", nullable: false),
                     ChangeAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -33,7 +33,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    Tracker = table.Column<Guid>(type: "uuid", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     ChangeAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },

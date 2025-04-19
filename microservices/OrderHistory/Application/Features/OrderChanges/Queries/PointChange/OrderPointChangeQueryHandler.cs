@@ -12,7 +12,7 @@ public class OrderPointChangeQueryHandler(IUnitOfWork unitOfWork, IRequestClient
 {
     public async Task<OrderPointChangeResponse> Handle(OrderPointChangeQuery request, CancellationToken cancellationToken)
     {
-        var pointChanges = await unitOfWork.PointChanges.GetPointChangesAsync(request.OrderId);
+        var pointChanges = await unitOfWork.PointChanges.GetPointChangesAsync(request.Tracker);
         var pointIds = pointChanges.Select(pc => pc.PointId).ToArray();
 
         var pointInfoResponse = await client.GetResponse<GetCompanyPointInfosResponse>(
@@ -25,7 +25,7 @@ public class OrderPointChangeQueryHandler(IUnitOfWork unitOfWork, IRequestClient
 
         var orderPointChangeDtos = pointChanges
             .Select(pc => new OrderPointChangeDTO(
-                OrderId: pc.OrderId,
+                Tracker: pc.Tracker,
                 PointId: pc.PointId,
                 Address: addressDictionary.TryGetValue(pc.PointId, out var address)
                     ? address

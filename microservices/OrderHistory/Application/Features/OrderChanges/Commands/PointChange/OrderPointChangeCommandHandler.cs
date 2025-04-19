@@ -13,9 +13,10 @@ public class OrderPointChangeCommandHandler(IUnitOfWork unitOfWork)
         await unitOfWork.PointChanges.AddAsync(
             new Domain.Entities.OrderPointChange
             {
-                OrderId = request.OrderId,
+                Tracker = request.Tracker,
                 PointId = request.PointId
             });
+        await unitOfWork.CompleteAsync();
         return new OrderPointChangeResponse(Message: "order current point change successful");
     }
 }

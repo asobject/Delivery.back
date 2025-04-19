@@ -2,4 +2,4 @@
 
 namespace BuildingBlocks.Messaging.Events;
 
-public record  OrderPointChangeEvent(int OrderId,int PointId);
+public record  OrderPointChangeEvent(Guid Tracker,int PointId);

@@ -17,17 +17,24 @@ public class GetOrderByTrackerQueryHandler(IUnitOfWork unitOfWork, IRequestClien
     public async Task<GetOrderByTrackerResponse> Handle(GetOrderByTrackerQuery query, CancellationToken cancellationToken)
     {
         var order = await unitOfWork.Orders.GetOrderByTrackerAsync(query.Tracker) ?? throw new NotFoundException($"order with tracker={query.Tracker} not found");
-        var companyPointIds = new[]
-     {
+        var senderReceiverCompanyIds = new[]
+      {
         (Point: order.SenderDeliveryPoint, Type: "sender"),
         (Point: order.ReceiverDeliveryPoint, Type: "receiver")
     }
-     .Where(x => x.Point.Method == DeliveryMethod.PickupPoint)
-     .Select(x => x.Point.CompanyPointId)
-     .Where(id => id.HasValue)
-     .Select(id => id!.Value)
-     .Distinct()
-     .ToArray();
+      .Where(x => x.Point.Method == DeliveryMethod.PickupPoint)
+      .Select(x => x.Point.CompanyPointId)
+      .Where(id => id.HasValue)
+      .Select(id => id!.Value);
+
+        var currentCompanyId = order.CurrentPointId.HasValue
+            ? [order.CurrentPointId.Value]
+            : Enumerable.Empty<int>();
+
+        var companyPointIds = senderReceiverCompanyIds
+            .Concat(currentCompanyId)
+            .Distinct()
+            .ToArray();
         var addressLookup = new Dictionary<int, string>();
 
         if (companyPointIds.Length != 0)

@@ -14,7 +14,7 @@ public class OrderPointChangeCommandHandler(IUnitOfWork unitOfWork, IPublishEndp
         var order = await unitOfWork.Orders.GetOrderByTrackerAsync(request.Tracker) ?? throw new NotFoundException($"order with tracker={request.Tracker} not found");
         order.CurrentPointId = request.PointId;
         await unitOfWork.Orders.UpdateCurrentPointAsync(order.Id,request.PointId);
-        await publishEndpoint.Publish(new OrderPointChangeEvent(OrderId: order.Id, PointId: request.PointId), cancellationToken);
+        await publishEndpoint.Publish(new OrderPointChangeEvent(Tracker: order.Tracker, PointId: request.PointId), cancellationToken);
         return new OrderPointChangeResponse(Message: "order current point change successful");
     }
 }

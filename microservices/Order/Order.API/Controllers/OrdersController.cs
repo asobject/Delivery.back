@@ -39,7 +39,7 @@ public class OrdersController(IMediator mediator) : ControllerBase
         var response = await mediator.Send(new OrderPointChangeCommand(tracker, request.PointId));
         return Ok(response);
     }
-    [HttpGet("{tracker:guid?}")]
+    [HttpGet("{tracker?}")]
     public async Task<IActionResult> GetOrders([FromHeader(Name = "X-User-Sub")] string? sub,Guid? tracker, [FromQuery] int pageNumber = 1,
           [FromQuery] int pageSize = 10)
     {

@@ -33,11 +33,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("ChangeAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("PointId")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("Tracker")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -55,11 +55,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("ChangeAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("Tracker")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 

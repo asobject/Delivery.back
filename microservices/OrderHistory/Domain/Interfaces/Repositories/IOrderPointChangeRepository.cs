@@ -7,5 +7,5 @@ namespace Domain.Interfaces.Repositories;
 
 public interface IOrderPointChangeRepository:IRepository<OrderPointChange>
 {
-    Task<IEnumerable<OrderPointChange>> GetPointChangesAsync(int orderId);
+    Task<IEnumerable<OrderPointChange>> GetPointChangesAsync(Guid tracker);
 }

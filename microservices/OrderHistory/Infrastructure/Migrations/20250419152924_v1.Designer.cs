@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250416081541_v1")]
+    [Migration("20250419152924_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -36,11 +36,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("ChangeAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("PointId")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("Tracker")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -58,11 +58,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("ChangeAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("Tracker")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 

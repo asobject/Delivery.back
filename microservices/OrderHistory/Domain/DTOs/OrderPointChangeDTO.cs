@@ -2,4 +2,4 @@
 
 namespace Domain.DTOs;
 
-public record OrderPointChangeDTO(int OrderId,int PointId,string Address,DateTime ChangeAt);
+public record OrderPointChangeDTO(Guid Tracker,int PointId,string Address,DateTime ChangeAt);

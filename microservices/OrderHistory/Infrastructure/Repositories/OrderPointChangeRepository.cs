@@ -9,8 +9,8 @@ namespace Infrastructure.Repositories;
 
 public class OrderPointChangeRepository(ApplicationDbContext context) : Repository<OrderPointChange>(context), IOrderPointChangeRepository
 {
-    public async Task<IEnumerable<OrderPointChange>> GetPointChangesAsync(int orderId)
+    public async Task<IEnumerable<OrderPointChange>> GetPointChangesAsync(Guid tracker)
     {
-       return await _dbSet.AsNoTracking().Where(o => o.OrderId == orderId).ToListAsync();
+       return await _dbSet.AsNoTracking().Where(o => o.Tracker == tracker).ToListAsync();
     }
 }

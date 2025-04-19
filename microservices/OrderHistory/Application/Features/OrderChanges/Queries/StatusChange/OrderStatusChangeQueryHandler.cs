@@ -9,9 +9,9 @@ public class OrderStatusChangeQueryHandler(IUnitOfWork unitOfWork)
 {
     public async Task<OrderStatusChangeResponse> Handle(OrderStatusChangeQuery request, CancellationToken cancellationToken)
     {
-        var response = await unitOfWork.StatusChanges.GetStatusChangesAsync(request.OrderId);
+        var response = await unitOfWork.StatusChanges.GetStatusChangesAsync(request.Tracker);
         var dtos = response.Select(sc => new OrderStatusChangeDTO(
-            OrderId: sc.OrderId,
+           Tracker: sc.Tracker,
             Status: sc.Status,
             ChangeAt: sc.ChangeAt
             )).ToArray();

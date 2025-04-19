@@ -2,4 +2,4 @@
 
 namespace Application.Features.OrderChanges.Commands.PointChange;
 
-public record OrderPointChangeCommand(int OrderId, int PointId) : IRequest<OrderPointChangeResponse>;
+public record OrderPointChangeCommand(Guid Tracker, int PointId) : IRequest<OrderPointChangeResponse>;

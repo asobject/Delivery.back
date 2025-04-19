@@ -12,7 +12,7 @@ public class OrderStatusChangeConsumer(IMediator mediator)
 {
     public async Task Consume(ConsumeContext<OrderStatusChangeEvent> context)
     {
-        var status = new OrderStatusChangeCommand(context.Message.OrderId, context.Message.Status);
+        var status = new OrderStatusChangeCommand(context.Message.Tracker, context.Message.Status);
         _ = await mediator.Send(status);
     }
 }

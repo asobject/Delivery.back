@@ -2,4 +2,4 @@
 
 namespace Application.Features.OrderChanges.Queries.StatusChange;
 
-public record OrderStatusChangeQuery(int OrderId) : IRequest<OrderStatusChangeResponse>;
+public record OrderStatusChangeQuery(Guid Tracker) : IRequest<OrderStatusChangeResponse>;
