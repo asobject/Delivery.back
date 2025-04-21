@@ -29,28 +29,6 @@ public class UserAuthController(IMediator mediator, ITokenExtractionService toke
 
         return Ok(response);
     }
-    //[HttpGet("users")]
-    //public async Task<IActionResult> GetUserById([FromQuery] string id)
-    //{
-    //    GetUserByIdQuery query = new()
-    //    {
-    //        Id = id
-    //    };
-    //    var user = await mediator.Send(query);
-
-    //    return Ok(user);
-    //}
-    //[HttpGet("users")]
-    //public async Task<IActionResult> GetUserByEmail([FromQuery] string email)
-    //{
-    //    GetUserByEmailQuery query = new()
-    //    {
-    //        Email = email
-    //    };
-    //    var user = await mediator.Send(query);
-
-    //    return Ok(user);
-    //}
     [HttpPut("refresh")]
     public async Task<IActionResult> RefreshToken()
     {

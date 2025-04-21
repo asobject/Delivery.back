@@ -101,7 +101,7 @@ internal static class JWTExtension
             if (context.HttpContext.Request.Headers.TryGetValue("Authorization", out var authHeader))
             {
                 var token = authHeader.ToString().Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
-                var refreshToken = context.Request.Cookies["refreshToken"];
+                var refreshToken = context.Request.Cookies[$"{schemePrefix}_REFRESH_TOKEN"];
                 if (string.IsNullOrEmpty(refreshToken))
                     throw new InvalidTokenException("Refresh Token is missing.");
                 var handler = new JwtSecurityTokenHandler();

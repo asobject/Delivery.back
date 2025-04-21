@@ -15,7 +15,7 @@ public static class OrderMapper
             Tracker: order.Tracker,
             CurrentPointAddress: order.CurrentPointId.HasValue
             ? addressLookup.GetValueOrDefault(order.CurrentPointId.Value, "Адрес недоступен")
-            : "null",
+            : null,
             SenderAddress: GetAddress(order.SenderDeliveryPoint, addressLookup),
             ReceiverAddress: GetAddress(order.ReceiverDeliveryPoint, addressLookup),
             Status: order.OrderStatus

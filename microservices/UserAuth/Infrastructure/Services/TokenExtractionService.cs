@@ -7,6 +7,7 @@ namespace Infrastructure.Services;
 
 public class TokenExtractionService(IHttpContextAccessor httpContextAccessor, IAppConfiguration appConfiguration) : ITokenExtractionService
 {
+    private static readonly string CookieKey = "USER_REFRESH_TOKEN";
     public string GetAccessTokenFromHeader()
     {
         var context = httpContextAccessor.HttpContext ??
@@ -23,7 +24,7 @@ public class TokenExtractionService(IHttpContextAccessor httpContextAccessor, IA
         var context = httpContextAccessor.HttpContext ??
           throw new InvalidOperationException("No active HTTP context.");
 
-        var refreshToken = context.Request.Cookies["refreshToken"];
+        var refreshToken = context.Request.Cookies[CookieKey];
         if (string.IsNullOrEmpty(refreshToken))
             throw new InvalidTokenException("Refresh Token is missing.");
         return refreshToken;
@@ -34,7 +35,7 @@ public class TokenExtractionService(IHttpContextAccessor httpContextAccessor, IA
         var context = httpContextAccessor.HttpContext ??
         throw new InvalidOperationException("No active HTTP context.");
 
-        context.Response.Cookies.Delete("refreshToken");
+        context.Response.Cookies.Delete(CookieKey);
     }
 
     public void SetRefreshTokenInCookie(string refreshToken)
@@ -48,6 +49,6 @@ public class TokenExtractionService(IHttpContextAccessor httpContextAccessor, IA
             SameSite = SameSiteMode.Strict,
             Expires = DateTime.UtcNow.AddDays(Convert.ToDouble(appConfiguration.GetValue("JWT_USER_REFRESH_TOKEN_VALIDITY")))
         };
-        context.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+        context.Response.Cookies.Append(CookieKey, refreshToken, cookieOptions);
     }
 }

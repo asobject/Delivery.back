@@ -19,6 +19,6 @@ public class OrderHistory(IMediator mediator) : ControllerBase
 
         var pointChanges = await mediator.Send(pointChangeQuery);
         var statusChanges = await mediator.Send(statusChangeQuery);
-        return Ok(new { pointChanges, statusChanges });
+        return Ok(new { pointChanges.OrderPointChanges, statusChanges.OrderStatusChanges });
     }
 }

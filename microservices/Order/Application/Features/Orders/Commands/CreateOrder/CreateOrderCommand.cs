@@ -19,7 +19,7 @@ public class CreateOrderCommand(CreateOrderRequest request, string senderId,stri
     public string? SenderAddress { get; set; } = request.SenderAddress;
     public GeoPoint? SenderCoordinates { get; set; } = request.SenderCoordinates;
     public int? SenderCompanyPointId { get; set; } = request.SenderCompanyPointId;
-    public DeliveryMethod ReceiverDeliveryMethod { get; set; } = request.SenderDeliveryMethod;
+    public DeliveryMethod ReceiverDeliveryMethod { get; set; } = request.ReceiverDeliveryMethod;
     public string? ReceiverAddress { get; set; } = request.ReceiverAddress;
     public GeoPoint? ReceiverCoordinates { get; set; } = request.ReceiverCoordinates;
     public int? ReceiverCompanyPointId { get; set; } = request.ReceiverCompanyPointId;

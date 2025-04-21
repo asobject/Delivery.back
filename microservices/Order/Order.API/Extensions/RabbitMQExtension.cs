@@ -12,6 +12,7 @@ internal static class RabbitMQExtension
             cfg =>
             {
                 cfg.AddConsumer<UserVerifiedConsumer>();
+                cfg.AddConsumer<UserRegisteredConsumer>();
             });
     }
 }

@@ -11,7 +11,6 @@ public class OrderStatusChangeQueryHandler(IUnitOfWork unitOfWork)
     {
         var response = await unitOfWork.StatusChanges.GetStatusChangesAsync(request.Tracker);
         var dtos = response.Select(sc => new OrderStatusChangeDTO(
-           Tracker: sc.Tracker,
             Status: sc.Status,
             ChangeAt: sc.ChangeAt
             )).ToArray();

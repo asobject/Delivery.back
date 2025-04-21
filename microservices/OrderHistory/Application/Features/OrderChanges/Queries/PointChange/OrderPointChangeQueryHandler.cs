@@ -25,8 +25,6 @@ public class OrderPointChangeQueryHandler(IUnitOfWork unitOfWork, IRequestClient
 
         var orderPointChangeDtos = pointChanges
             .Select(pc => new OrderPointChangeDTO(
-                Tracker: pc.Tracker,
-                PointId: pc.PointId,
                 Address: addressDictionary.TryGetValue(pc.PointId, out var address)
                     ? address
                     : "Адрес не найден",

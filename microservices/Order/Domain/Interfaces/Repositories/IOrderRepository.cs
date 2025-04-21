@@ -18,4 +18,5 @@ public interface IOrderRepository:IRepository<Order>
       int pageNumber,
       int pageSize,
       Expression<Func<Order, bool>>? predicate = null);
+    Task UpdateOrderReceiverIdByEmailAsync(string userId, string email);
 }

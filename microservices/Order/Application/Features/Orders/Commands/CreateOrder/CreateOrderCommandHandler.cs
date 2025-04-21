@@ -11,7 +11,6 @@ using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using MassTransit;
 using MediatR;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Application.Features.Orders.Commands.CreateOrder;
 
 public class CreateOrderCommandHandler(IUnitOfWork unitOfWork, IPublishEndpoint publishEndpoint, IRequestClient<GetCompanyPointInfosRequest> client, ICalculationService calculationService) : IRequestHandler<CreateOrderCommand, CreateOrderResponse>

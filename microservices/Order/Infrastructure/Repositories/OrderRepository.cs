@@ -41,7 +41,7 @@ public class OrderRepository(ApplicationDbContext context) : Repository<Order>(c
         int totalRecords = await baseQuery.CountAsync();
 
         var data = await baseQuery
-            .OrderBy(o => o.Id)
+            .OrderByDescending(o => o.Id)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .AsNoTracking()
@@ -59,8 +59,13 @@ public class OrderRepository(ApplicationDbContext context) : Repository<Order>(c
          .Where(o => o.Id == orderId)
          .ExecuteUpdateAsync(s => s
              .SetProperty(o => o.OrderStatus, status));
-    public async Task UpdateCurrentPointAsync(int orderId,int pointId) => await _dbSet
+    public async Task UpdateCurrentPointAsync(int orderId, int pointId) => await _dbSet
          .Where(o => o.Id == orderId)
          .ExecuteUpdateAsync(s => s
              .SetProperty(o => o.CurrentPointId, pointId));
+    public async Task UpdateReceiverIdByEmailAsync(string userId, string email) => await _dbSet
+            .Where(o => o.ReceiverEmail == email)
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(o => o.ReceiverId, userId));
+
 }
