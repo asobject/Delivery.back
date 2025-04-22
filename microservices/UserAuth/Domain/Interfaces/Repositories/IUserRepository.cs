@@ -18,4 +18,6 @@ public interface IUserRepository
     Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
     Task<bool> ExistsAsync(string id);
     Task<bool> RoleExistsAsync(string roleName);
+    Task<bool> ChangePasswordAsync(ApplicationUser user, string currentPassword, string newPassword);
+    Task<bool> ResetPasswordAsync(ApplicationUser user, string token, string newPassword);
 }

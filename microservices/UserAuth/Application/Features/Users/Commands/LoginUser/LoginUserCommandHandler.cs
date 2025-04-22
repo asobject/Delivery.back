@@ -3,13 +3,15 @@
 using Application.Interfaces.Services;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Interfaces.Services;
+using BuildingBlocks.Messaging.Events;
 using Domain.Interfaces.Repositories;
+using MassTransit;
 using MediatR;
 using System.Security.Claims;
 
 namespace Application.Features.Users.Commands.LoginUser;
 
-public class LoginUserCommandHandler(IUserRepository userRepository, ITokenService tokenService, ITokenExtractionService tokenExtractionService,IRefreshTokenStore refreshTokenStore)
+public class LoginUserCommandHandler(IUserRepository userRepository, ITokenService tokenService, IPublishEndpoint publishEndpoint, ITokenExtractionService tokenExtractionService, IRefreshTokenStore refreshTokenStore)
     : IRequestHandler<LoginUserCommand, LoginUserResponse>
 {
     public async Task<LoginUserResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -31,13 +33,14 @@ public class LoginUserCommandHandler(IUserRepository userRepository, ITokenServi
         (string accessToken, string refreshToken, DateTime refreshTokenExpiryTime) = tokenService.GenerateTokens(user, claims);
         var data = tokenService.GetData(accessToken);
 
-        await refreshTokenStore.StoreTokenAsync(user.Id,data.Jti, refreshToken);
+        await refreshTokenStore.StoreTokenAsync(user.Id, data.Jti, refreshToken);
 
         tokenExtractionService.SetRefreshTokenInCookie(refreshToken);
-        //user.RefreshToken = refreshToken;
-        //user.RefreshTokenExpiryTime = refreshTokenExpiryTime;
-
-        //await userRepository.UpdateAsync(user);
+        await publishEndpoint.Publish(new EmailSendingEvent(
+           To: user.Email!,
+           Subject: "Вы авторизовались",
+           Body: "Вы успешно авторизовались"
+           ), cancellationToken);
 
         return new LoginUserResponse
         {

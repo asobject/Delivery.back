@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Interfaces.Services;
 using Application.Features.Users.Queries.GetUserById;
+using Domain.Interfaces.Services;
 
 namespace UserAuth.API.Services.App
 {
@@ -36,6 +37,7 @@ namespace UserAuth.API.Services.App
 
             services.AddScoped<IAppConfiguration, AppConfiguration>();
             services.AddScoped<IRefreshTokenStore, RedisRefreshTokenStore>();
+            services.AddScoped<IUserService, UserService>();
 
 
             services.AddScoped<IUserRepository, UserRepository>();

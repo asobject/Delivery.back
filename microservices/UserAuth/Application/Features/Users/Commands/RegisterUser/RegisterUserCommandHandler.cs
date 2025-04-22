@@ -37,7 +37,7 @@ public class RegisterUserCommandHandler(IUserRepository userRepository, IPublish
         await publishEndpoint.Publish(new EmailSendingEvent(
         To: user.Email,
               Subject: "Вы зарегистрировались",
-              Body: $"Вы успешно зарегистрировались в MyDelivery"
+              Body: $"Вы успешно зарегистрировались"
         ), cancellationToken);
 
         return new RegisterUserResponse

@@ -29,6 +29,16 @@ public class UserRepository(UserManager<ApplicationUser> userManager, RoleManage
         await this.AddToRoleAsync(user, UserRoles.User);
         return result.Succeeded;
     }
+    public async Task<bool> ChangePasswordAsync(ApplicationUser user, string currentPassword, string newPassword)
+    {
+        var result = await userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        return result.Succeeded;
+    }
+    public async Task<bool> ResetPasswordAsync(ApplicationUser user, string token, string newPassword)
+    {
+        var result = await userManager.ResetPasswordAsync(user, token, newPassword);
+        return result.Succeeded;
+    }
     public async Task<bool> RoleExistsAsync(string roleName)
            => await roleManager.RoleExistsAsync(roleName);
 

@@ -1,12 +1,16 @@
 ﻿
+using Application.Features.Users.Commands.ChangeUserPassword;
+using Application.Features.Users.Commands.ForgotUserPassword;
 using Application.Features.Users.Commands.LoginUser;
 using Application.Features.Users.Commands.LogoutUser;
 using Application.Features.Users.Commands.RefreshTokenUser;
 using Application.Features.Users.Commands.RegisterUser;
 using BuildingBlocks.Interfaces.Services;
+using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Application.Features.Users.Commands.ResetUserPassword;
 
 namespace UserAuth.API.Controllers;
 
@@ -19,7 +23,6 @@ public class UserAuthController(IMediator mediator, ITokenExtractionService toke
     {
         _ = await mediator.Send(command);
         return Created();
-        //return CreatedAtAction(nameof(GetUserByEmail), new { email = response.Email }, response);
     }
 
     [HttpPost("login")]
@@ -40,6 +43,28 @@ public class UserAuthController(IMediator mediator, ITokenExtractionService toke
         var response = await mediator.Send(command);
         return Ok(response);
     }
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword([FromHeader(Name = "X-User-Sub")] string sub, [FromBody] ChangeUserPasswordRequest request)
+    {
+        ChangeUserPasswordCommand command = new(sub, request.CurrentPassword, request.NewPassword);
+        var response = await mediator.Send(command);
+        return Ok(response);
+    }
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromHeader(Name = "X-User-Email")] string email)
+    {
+        ForgotUserPasswordCommand command = new(email);
+        var response = await mediator.Send(command);
+        return Ok(response);
+    }
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromHeader(Name = "X-User-Email")] string email, [FromBody] ResetUserPasswordRequest request)
+    {
+        ResetUserPasswordCommand command = new(email, request.Token, request.NewPassword);
+        var response = await mediator.Send(command);
+        return Ok(response);
+    }
+
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
