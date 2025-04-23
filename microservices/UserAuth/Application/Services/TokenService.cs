@@ -100,7 +100,7 @@ public class TokenService(IAppConfiguration configuration) : ITokenService
         new("email", user.Email!),
         new ("emailVerified",user.EmailConfirmed.ToString().ToLower()),
         new ("firstName",user.FirstName),
-        new ("lastName",user.LastName),
+        new ("lastName",user.LastName??""),
         new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
     };
 
