@@ -39,6 +39,11 @@ public class UserRepository(UserManager<ApplicationUser> userManager, RoleManage
         var result = await userManager.ResetPasswordAsync(user, token, newPassword);
         return result.Succeeded;
     }
+    public async Task<bool> ConfirmEmailAsync(ApplicationUser user, string token)
+    {
+        var result = await userManager.ConfirmEmailAsync(user, token);
+        return result.Succeeded;
+    }
     public async Task<bool> RoleExistsAsync(string roleName)
            => await roleManager.RoleExistsAsync(roleName);
 

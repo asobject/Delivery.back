@@ -16,12 +16,17 @@ public class ResetUserPasswordCommandHandler(IUserRepository userRepository, IRe
 {
     public async Task<ResetUserPasswordResponse> Handle(ResetUserPasswordCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByEmailAsync(request.Email);
+        var user = await userRepository.GetByIdAsync(request.Sub);
         if (user is null)
             return new ResetUserPasswordResponse("password reseted successful");
         var result = await userRepository.ResetPasswordAsync(user, request.Token, request.NewPassword);
         if (!result)
         {
+            await publishEndpoint.Publish(new EmailSendingEvent(
+         To: user.Email!,
+         Subject: "Сброс пароля",
+         Body: "Кто-то пытался сбросить ваш пароль"
+         ), cancellationToken);
             throw new ConflictException("invalid request");
         }
         await refreshTokenStore.RevokeAllTokensAsync(user.Id);

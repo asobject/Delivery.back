@@ -79,8 +79,8 @@ public class TokenService(IAppConfiguration configuration) : ITokenService
 
             return new TokenDataDTO
             {
-                Email = GetClaimValue(ClaimTypes.Email,"email"),
-                Sub = GetClaimValue(ClaimTypes.NameIdentifier,"sub"),
+                Email = GetClaimValue(ClaimTypes.Email, "email"),
+                Sub = GetClaimValue(ClaimTypes.NameIdentifier, "sub"),
                 Jti = GetClaimValue("jti"),
                 FirstName = GetClaimValue("firstName"),
                 Roles = [.. claims.Where(c => c.Type == ClaimTypes.Role || c.Type == "roles").Select(c => c.Value)],
@@ -98,7 +98,9 @@ public class TokenService(IAppConfiguration configuration) : ITokenService
     {
         new ("sub",user.Id),
         new("email", user.Email!),
+        new ("emailVerified",user.EmailConfirmed.ToString().ToLower()),
         new ("firstName",user.FirstName),
+        new ("lastName",user.LastName),
         new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
     };
 

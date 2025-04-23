@@ -22,7 +22,7 @@ public class ForgotUserPasswordCommandHandler(IUserRepository userRepository, IU
         await publishEndpoint.Publish(new EmailSendingEvent(
             To: user.Email!,
             Subject: "Восстановление пароля",
-            Body: $"https://localhost:4200/reset-password?token={encodedToken}"
+            Body: $"Восстановите ваш пароль <a href='https://localhost:4200/reset-password?token={encodedToken}&sub={user.Id}'>нажать здесь</a>"
             ), cancellationToken);
         return new ForgotUserPasswordResponse(Message: "email sent successful");
     }

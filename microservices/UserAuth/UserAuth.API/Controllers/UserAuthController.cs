@@ -11,6 +11,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Application.Features.Users.Commands.ResetUserPassword;
+using Microsoft.AspNetCore.Identity;
+using System.Net;
+using Application.Features.Users.Commands.SendEmailConfirmation;
 
 namespace UserAuth.API.Controllers;
 
@@ -51,16 +54,20 @@ public class UserAuthController(IMediator mediator, ITokenExtractionService toke
         return Ok(response);
     }
     [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromHeader(Name = "X-User-Email")] string email)
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotUserPasswordCommand command)
     {
-        ForgotUserPasswordCommand command = new(email);
         var response = await mediator.Send(command);
         return Ok(response);
     }
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromHeader(Name = "X-User-Email")] string email, [FromBody] ResetUserPasswordRequest request)
+    public async Task<IActionResult> ResetPassword([FromBody] ResetUserPasswordCommand command)
     {
-        ResetUserPasswordCommand command = new(email, request.Token, request.NewPassword);
+        var response = await mediator.Send(command);
+        return Ok(response);
+    }
+    [HttpGet("confirm-email")]
+    public async Task<IActionResult> SendConfirmEmail([FromBody] SendEmailConfirmationCommand command)
+    {
         var response = await mediator.Send(command);
         return Ok(response);
     }

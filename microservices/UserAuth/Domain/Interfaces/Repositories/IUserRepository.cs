@@ -20,4 +20,5 @@ public interface IUserRepository
     Task<bool> RoleExistsAsync(string roleName);
     Task<bool> ChangePasswordAsync(ApplicationUser user, string currentPassword, string newPassword);
     Task<bool> ResetPasswordAsync(ApplicationUser user, string token, string newPassword);
+    Task<bool> ConfirmEmailAsync(ApplicationUser user, string token);
 }

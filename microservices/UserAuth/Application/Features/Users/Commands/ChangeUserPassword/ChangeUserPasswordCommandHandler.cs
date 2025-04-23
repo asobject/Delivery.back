@@ -21,6 +21,11 @@ public class ChangeUserPasswordCommandHandler(
         var result = await userRepository.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
         if (!result)
         {
+            await publishEndpoint.Publish(new EmailSendingEvent(
+           To: user.Email!,
+           Subject: "Изменение пароля",
+           Body: "Кто-то пытался измененить ваш пароль"
+           ), cancellationToken);
             throw new ConflictException("invalid request");
         }
         await refreshTokenStore.RevokeAllTokensAsync(user.Id);
