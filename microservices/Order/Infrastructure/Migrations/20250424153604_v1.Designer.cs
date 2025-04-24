@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250417105748_v1")]
+    [Migration("20250424153604_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -109,7 +109,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ReceiverEmail")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ReceiverId")

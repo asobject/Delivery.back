@@ -106,7 +106,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ReceiverEmail")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ReceiverId")

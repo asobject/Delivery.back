@@ -11,9 +11,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Application.Features.Users.Commands.ResetUserPassword;
-using Microsoft.AspNetCore.Identity;
-using System.Net;
 using Application.Features.Users.Commands.SendEmailConfirmation;
+using Application.Features.Users.Commands.ChangeUserFirstName;
+using Application.Features.Users.Commands.ChangeUserLastName;
 
 namespace UserAuth.API.Controllers;
 
@@ -46,6 +46,23 @@ public class UserAuthController(IMediator mediator, ITokenExtractionService toke
         var response = await mediator.Send(command);
         return Ok(response);
     }
+    [HttpPatch("last-name")]
+    public async Task<IActionResult> ChangeLastName([FromHeader(Name = "X-User-Sub")] string sub, [FromBody]ChangeUserLastNameRequest request)
+    {
+        var command = new ChangeUserLastNameCommand(sub, request.NewLastName);
+        var response = await mediator.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPatch("first-name")]
+    public async Task<IActionResult> ChangeFirstName([FromHeader(Name = "X-User-Sub")] string sub, [FromBody] ChangeUserFirstNameRequest request)
+    {
+        var command = new ChangeUserFirstNameCommand(sub, request.NewFirstName);
+        var response = await mediator.Send(command);
+        return Ok(response);
+    }
+
+
     [HttpPost("change-password")]
     public async Task<IActionResult> ChangePassword([FromHeader(Name = "X-User-Sub")] string sub, [FromBody] ChangeUserPasswordRequest request)
     {

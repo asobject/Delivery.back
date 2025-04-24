@@ -20,7 +20,7 @@ public class Order : IEntity
 
     // Получатель (может быть незарегистрированным)
     public string? ReceiverId { get; set; }
-    public string ReceiverEmail { get; set; } = null!;
+    public string? ReceiverEmail { get; set; }
 
     public int SenderDeliveryPointId { get; set; }
     public DeliveryPoint SenderDeliveryPoint { get; set; } = null!;

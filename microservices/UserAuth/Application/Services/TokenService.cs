@@ -97,8 +97,8 @@ public class TokenService(IAppConfiguration configuration) : ITokenService
         var claims = new List<Claim>
     {
         new ("sub",user.Id),
-        new("email", user.Email!),
-        new ("emailVerified",user.EmailConfirmed.ToString().ToLower()),
+        new ("email", user.Email!),
+        new ("emailVerified",user.EmailConfirmed.ToString().ToLower(), ClaimValueTypes.Boolean),
         new ("firstName",user.FirstName),
         new ("lastName",user.LastName??""),
         new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

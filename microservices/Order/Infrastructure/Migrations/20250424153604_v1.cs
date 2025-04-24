@@ -65,7 +65,7 @@ namespace Infrastructure.Migrations
                     PackageSize = table.Column<int>(type: "integer", nullable: false),
                     SenderId = table.Column<string>(type: "text", nullable: false),
                     ReceiverId = table.Column<string>(type: "text", nullable: true),
-                    ReceiverEmail = table.Column<string>(type: "text", nullable: false),
+                    ReceiverEmail = table.Column<string>(type: "text", nullable: true),
                     SenderDeliveryPointId = table.Column<int>(type: "integer", nullable: false),
                     ReceiverDeliveryPointId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),

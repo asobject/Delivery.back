@@ -11,7 +11,7 @@ public class UserRegisteredConsumer(
 {
     public async Task Consume(ConsumeContext<UserRegisteredEvent> context)
     {
-        await unitOfWork.Orders.UpdateOrderReceiverIdByEmailAsync(context.Message.Id, context.Message.Email);
+        await unitOfWork.Orders.UpdateOrderReceiverIdByEmailAsync(context.Message.UserId, context.Message.Email);
         await unitOfWork.CompleteAsync();
     }
 }

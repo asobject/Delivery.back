@@ -1,4 +1,4 @@
 ﻿
 namespace BuildingBlocks.Messaging.Events;
 
-public record UserRegisteredEvent(string Id,string Email);
+public record UserRegisteredEvent(string UserId,string Email);

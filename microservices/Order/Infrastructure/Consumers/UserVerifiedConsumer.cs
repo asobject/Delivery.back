@@ -16,6 +16,7 @@ public class UserVerifiedConsumer(
         var order = await unitOfWork.Orders
             .GetByIdAsync(context.Message.OrderId) ?? throw new NotFoundException($"Order:{context.Message.OrderId} not found");
         order.ReceiverId = context.Message.ReceiverUserId;
+        order.ReceiverEmail = null;
         await unitOfWork.CompleteAsync();
     }
 }

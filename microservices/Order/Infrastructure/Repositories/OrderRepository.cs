@@ -63,9 +63,12 @@ public class OrderRepository(ApplicationDbContext context) : Repository<Order>(c
          .Where(o => o.Id == orderId)
          .ExecuteUpdateAsync(s => s
              .SetProperty(o => o.CurrentPointId, pointId));
-    public async Task UpdateOrderReceiverIdByEmailAsync(string userId, string email) => await _dbSet
-            .Where(o => o.ReceiverEmail == email)
-            .ExecuteUpdateAsync(s => s
-                .SetProperty(o => o.ReceiverId, userId));
+    public async Task UpdateOrderReceiverIdByEmailAsync(string userId, string email)
+    => await _dbSet
+        .Where(o => o.ReceiverEmail == email)
+        .ExecuteUpdateAsync(s => s
+            .SetProperty(o => o.ReceiverId, userId)
+            .SetProperty(o => o.ReceiverEmail,  (string?)null)
+        );
 
 }
