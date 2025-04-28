@@ -22,6 +22,16 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
       - internal
+ 
+  mongodb:
+    container_name: mongodb
+    restart: always
+    ports: 
+    - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - internal
       
   api-gateaway:
     environment:
@@ -227,6 +237,24 @@ services:
 
 
 
+  support.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "5023:8080"
+      - "5073:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+      - microservices/Support/Support.API/.env
+    networks:
+      - internal
 networks:
   internal:
     name: internal
@@ -235,7 +263,9 @@ networks:
 volumes:
   rabbitmq_data:
   redis_data:
+  mongo_data:
   
+
 
 
 

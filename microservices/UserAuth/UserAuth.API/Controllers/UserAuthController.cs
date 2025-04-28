@@ -14,6 +14,7 @@ using Application.Features.Users.Commands.ResetUserPassword;
 using Application.Features.Users.Commands.SendEmailConfirmation;
 using Application.Features.Users.Commands.ChangeUserFirstName;
 using Application.Features.Users.Commands.ChangeUserLastName;
+using Application.Features.Users.Commands.EmailConfirmation;
 
 namespace UserAuth.API.Controllers;
 
@@ -83,7 +84,13 @@ public class UserAuthController(IMediator mediator, ITokenExtractionService toke
         return Ok(response);
     }
     [HttpGet("confirm-email")]
-    public async Task<IActionResult> SendConfirmEmail([FromBody] SendEmailConfirmationCommand command)
+    public async Task<IActionResult> SendConfirmEmail([FromHeader(Name = "X-User-Email")] string email)
+    {
+        var response = await mediator.Send(new SendEmailConfirmationCommand(email));
+        return Ok(response);
+    }
+    [HttpPost("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail([FromBody] EmailConfirmationCommand command)
     {
         var response = await mediator.Send(command);
         return Ok(response);
