@@ -17,8 +17,7 @@
         "companypoints.api.migrations": "DoNotStart",
         "email.api": "StartDebugging",
         "orderhistory.api": "StartDebugging",
-        "orderhistory.api.migrations": "DoNotStart",
-        "support.api": "StartDebugging"
+        "orderhistory.api.migrations": "DoNotStart"
       }
     }
   }

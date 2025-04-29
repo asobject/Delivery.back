@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using YarpApiGateaway.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace YarpApiGateaway.Extensions;
 
@@ -117,11 +118,8 @@ internal static class JWTExtension
                 if (!isValid)
                     throw new InvalidTokenException("invalid token");
 
-                if (!string.IsNullOrEmpty(sub) && schemePrefix == "USER")
-                {
-                    context.HttpContext.Request.Headers.Append("X-User-Sub", sub);
-                    context.HttpContext.Request.Headers.Append("X-User-Email", email);
-                }
+                context.HttpContext.Request.Headers.Append("X-User-Sub", sub);
+                context.HttpContext.Request.Headers.Append("X-User-Email", email);
 
             }
         }

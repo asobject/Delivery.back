@@ -3,8 +3,6 @@ services:
     image: redis
   rabbitmq:
     image: rabbitmq:management
-  mongodb:
-    image: mongo
 
   api-gateaway:
     image: ${DOCKER_REGISTRY-}yarpapigateaway
@@ -78,11 +76,4 @@ services:
     build:
       context: .
       dockerfile: microservices/OrderHistory/OrderHistory.API/Dockerfile
-
-
-  support.api:
-    image: ${DOCKER_REGISTRY-}supportapi
-    build:
-      context: .
-      dockerfile: microservices/Support/Support.API/Dockerfile
 
