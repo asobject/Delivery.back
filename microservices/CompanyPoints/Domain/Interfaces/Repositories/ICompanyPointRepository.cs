@@ -10,7 +10,7 @@ namespace Domain.Interfaces.Repositories;
 public interface ICompanyPointRepository : IRepository<CompanyPoint>
 {
     Task<string?> GetExistingPointName(CompanyPoint point, int? id = null);
-    Task<IEnumerable<CompanyPoint>> GetCompanyPointsInRadiusAsync(GeoPoint center, double radiusKm);
+    Task<bool> CompanyPointsExistInRadiusAsync(GeoPoint center, double radiusKm);
     Task<IEnumerable<ClusterDTO>> GetClustersAsync(params PointStatus[] statuses);
     Task<PagedResultDTO<CompanyPoint>> GetPagedAsync(
     int pageNumber,

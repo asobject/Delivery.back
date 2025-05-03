@@ -14,33 +14,41 @@ public class CompanyPointRepository(ApplicationDbContext context) : Repository<C
 {
     public async Task<string?> GetExistingPointName(CompanyPoint point, int? id = null)
     {
-        string sqlQuery = @"
- SELECT *
- FROM public.""CompanyPoints"" p
- WHERE (p.""Name"" = {0} OR p.""PointType"" = {1})
- AND ST_Distance(p.""Coordinates"", ST_MakePoint({2}, {3}, 4326)::geography) < 0.0001";
-        if (id is not null)
+        var query = _dbSet
+            .FromSqlInterpolated($@"
+            SELECT * 
+            FROM ""CompanyPoints"" AS p
+            WHERE 
+                (p.""Name"" = {point.Name} OR p.""PointType"" = {point.PointType})
+                AND ST_DWithin(
+                    p.""Coordinates""::geography,
+                    ST_SetSRID(ST_MakePoint({point.Coordinates.Longitude}, {point.Coordinates.Latitude}), 4326)::geography,
+                    0.1
+                )");
+
+        if (id.HasValue)
         {
-            sqlQuery += @" AND p.""Id"" != {4}";
+            query = query.Where(p => p.Id != id.Value);
         }
 
-        var existingPoints = await FindBySqlAsync(sqlQuery,
-            point.Name, point.PointType, point.Coordinates.Longitude, point.Coordinates.Latitude, id!);
+        var existingPoint = await query
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
 
-        return existingPoints.FirstOrDefault()?.Name;
+        return existingPoint?.Name;
     }
-    public async Task<IEnumerable<CompanyPoint>> GetCompanyPointsInRadiusAsync(GeoPoint center, double radiusKm)
+
+    public async Task<bool> CompanyPointsExistInRadiusAsync(GeoPoint center, double radiusKm)
     {
         return await _dbSet
             .FromSqlInterpolated($@"
-                SELECT * FROM ""Points"" 
-                WHERE ST_DWithin(
-                    ""Coordinates""::geography, 
-                    ST_SetSRID(ST_MakePoint({center.Longitude}, {center.Latitude}), 4326)::geography,
-                    {radiusKm * 1000}
-                )")
-            .AsNoTracking()
-            .ToListAsync();
+            SELECT * FROM ""CompanyPoints"" 
+            WHERE ST_DWithin(
+                ""Coordinates""::geography, 
+                ST_SetSRID(ST_MakePoint({center.Longitude}, {center.Latitude}), 4326)::geography,
+                {radiusKm * 1000}
+            )")
+            .AnyAsync();
     }
 
     public async Task<IEnumerable<ClusterDTO>> GetClustersAsync(params PointStatus[] statuses)

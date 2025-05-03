@@ -2,6 +2,7 @@
 using Application.Features.Points.Commands.CreatePoint;
 using Application.Features.Points.Commands.DeletePoints;
 using Application.Features.Points.Commands.UpdatePoint;
+using Application.Features.Points.Queries.GetCheckPointExistInRadius;
 using Application.Features.Points.Queries.GetClusters;
 using Application.Features.Points.Queries.GetPagedPoints;
 using Application.Features.Points.Queries.GetPointById;
@@ -24,6 +25,8 @@ public class PointsController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPoints(
            [FromQuery] int? id,
+           [FromQuery] double? lat,
+           [FromQuery] double? lon,
            [FromQuery] int pageNumber = 1,
            [FromQuery] int pageSize = 10)
     {
@@ -35,6 +38,13 @@ public class PointsController(IMediator mediator) : ControllerBase
             };
             var point = await mediator.Send(byId);
             return Ok(point);
+        }
+        if (lat.HasValue && lon.HasValue)
+        {
+            var existQuery = new GetCheckPointExistInRadiusQuery(
+                new BuildingBlocks.Models.GeoPoint(lat.Value, lon.Value));
+            var exist = await mediator.Send(existQuery);
+            return Ok(exist);
         }
         var paged = new GetPagedPointsQuery
         {
