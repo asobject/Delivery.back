@@ -3,6 +3,8 @@ services:
     image: redis
   rabbitmq:
     image: rabbitmq:management
+  ollama:
+    image: ollama/ollama
 
   api-gateaway:
     image: ${DOCKER_REGISTRY-}yarpapigateaway
@@ -76,4 +78,11 @@ services:
     build:
       context: .
       dockerfile: microservices/OrderHistory/OrderHistory.API/Dockerfile
+
+
+  chat.api:
+    image: ${DOCKER_REGISTRY-}chatapi
+    build:
+      context: .
+      dockerfile: microservices/Chat/Chat.API/Dockerfile
 
