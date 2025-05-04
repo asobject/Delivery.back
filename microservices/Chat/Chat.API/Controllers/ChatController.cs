@@ -1,6 +1,5 @@
 ﻿using Application.Features.Chat.Commands.GenerateAi;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chat.API.Controllers;

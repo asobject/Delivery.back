@@ -17,7 +17,9 @@
         "companypoints.api.migrations": "DoNotStart",
         "email.api": "StartDebugging",
         "orderhistory.api": "StartDebugging",
-        "orderhistory.api.migrations": "DoNotStart"
+        "orderhistory.api.migrations": "DoNotStart",
+        "chat.api": "StartDebugging",
+        "ollama": "StartWithoutDebugging"
       }
     }
   }
