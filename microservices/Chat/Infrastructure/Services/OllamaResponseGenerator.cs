@@ -16,23 +16,48 @@ public class OllamaResponseGenerator(
 
     public async Task<string> GenerateResponseAsync(string prompt)
     {
+        var messages = new List<object>
+        {
+            new { role = "system", content = GetSystemPrompt() },
+            new { role = "user", content = "Где мой заказ?" },
+            new { role = "assistant", content = "Отследить посылку можно: 1) В личном кабинете 2) По трек-номеру из Email на главной странице" },
+            new { role = "user", content = prompt }
+        };
+
         var request = new
         {
             model = _settings.Model,
-            prompt,
+            messages,
             stream = false
         };
 
         var response = await _httpClient.PostAsJsonAsync(
-            "/api/generate",
+            "/api/chat",
             request
         );
 
         var result = await response.Content
             .ReadFromJsonAsync<OllamaResponse>();
 
-        return result?.Response ?? string.Empty;
+        return result?.Message.Content ?? string.Empty;
     }
 
-    private record OllamaResponse(string Response);
+    private static string GetSystemPrompt() => """
+        Ты русскоязычный AI-ассистент службы поддержки междугородней доставки грузов. 
+        Всегда сохраняй доброжелательный профессиональный тон.
+        
+        Жёсткие правила:
+        1. Отвечай ТОЛЬКО на русском языке
+        2. Помогай ТОЛЬКО с вопросами по доставке
+        3. Используй точные формулировки из базы знаний
+        4. Запрещено упоминать ИИ, алгоритмы или внутренние процессы
+        
+        Сценарии ответов:
+        - Отслеживание: личный кабинет или трек-номер
+        - Проблемы: контакт delivery.dev@yandex.ru
+        - Оформление: форма на сайте
+        """;
+
+    private record OllamaResponse(Message Message);
+    private record Message(string Content);
 }
